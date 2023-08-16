@@ -63,9 +63,9 @@ class UserService {
       return userToken;
     }
   
-    // public static getUserById(id: string) {
-    //   return prismaClient.user.findUnique({ where: { id } });
-    // }
+    public static getUserById(id: string) {
+      return prismaClient.user.findUnique({ where: { id } });
+    }
   
     // public static followUser(from: string, to: string) {
     //   return prismaClient.follows.create({
