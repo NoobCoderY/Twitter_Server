@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  binaryTargets        = ["native"]
 }
 
 datasource db {
@@ -17,12 +18,21 @@ model User {
   lastName        String?
   email           String  @unique
   profileImageURL String?
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // followers Follows[] @relation("follower")
   // following Follows[] @relation("following")
-
-  // tweets Tweet[]
+  tweets Tweet[]
 }
+
+model Tweet {
+  id       String  @id @default(cuid())
+  content  String
+  imageURL String?
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+

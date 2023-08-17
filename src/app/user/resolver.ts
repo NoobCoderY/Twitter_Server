@@ -2,6 +2,7 @@ import axios from "axios";
 import { prismaClient } from "../../client/db";
 import UserService from "../../services/user";
 import { GraphqlContext } from "../../inerface";
+import { User } from "@prisma/client";
 
 const queries = {
   verifyGoogleToken: async (parent: any, { token }: { token: string }) => {
@@ -16,4 +17,13 @@ const queries = {
   },
 };
 
-export const resolvers = { queries };
+const extraResolvers = {
+  User: {
+    tweets: (parent: User) => {
+      prismaClient.tweet.findMany({where:{authorId:parent.id}})
+      
+    }
+  }
+}
+
+export const resolvers = { queries,extraResolvers };
