@@ -9,18 +9,24 @@ const queries = {
     const resultToken = await UserService.verifyGoogleAuthToken(token);
     return resultToken;
   },
-  getCurrentUser: async (parent: any, args: any, ctx: GraphqlContext) => {
+  getCurrentUser: async (parent: any, args: any, ctx: GraphqlContext) => { 
+    
     const id = ctx.user?.id;
     if (!id) return null;
     const user = await UserService.getUserById(id);
     return user;
   },
+  getUserById: async (
+    parent: any,
+    { id }: { id: string },
+    ctx: GraphqlContext
+  ) => UserService.getUserById(id),
 };
 
 const extraResolvers = {
   User: {
     tweets: (parent: User) => {
-      prismaClient.tweet.findMany({where:{authorId:parent.id}})
+     return prismaClient.tweet.findMany({where:{authorId:parent.id}})
       
     }
   }

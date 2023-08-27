@@ -4,11 +4,46 @@ import { GraphqlContext } from "../../inerface";
 import { CreateTweetPayload } from "../../services/tweet";
 import TweetService from "../../services/tweet";
 import UserService from "../../services/user";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 
 
 const queries = {
   getAllTweets: () => TweetService.getAllTweets(),
+  getSignedURLForTweet: async (
+    
+    
+    parent: any,
+    { imageType, imageName }: { imageType: string; imageName: string },
+    ctx: GraphqlContext
+  ) => {
+    console.log(imageType,);
+    if (!ctx.user || !ctx.user.id) throw new Error("Unauthenticated");
+    const allowedImageTypes = [
+      "image/jpg",
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+    ];
+
+    if (!allowedImageTypes.includes(imageType))
+      throw new Error("Unsupported Image Type");
+
+    const s3Client = new S3Client({
+      region:process.env.AWS_DEFAULT_REGION
+    })
+
+    const putObjectCommand = new PutObjectCommand({
+      Bucket: "twitterclonebucketyash",
+      ContentType: imageType,
+      Key: `uploads/${ctx.user.id}/tweets/${imageName}-${Date.now()}`,
+    });
+
+    const signedURL = await getSignedUrl(s3Client, putObjectCommand);
+  
+    return signedURL;
+  },
 }
 const mutations = {
     createTweet: async (
