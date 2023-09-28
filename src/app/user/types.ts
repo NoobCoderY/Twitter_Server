@@ -1,4 +1,9 @@
 export const types = `#graphql
+    type Likes {
+        id: String!
+        tweet: Tweet
+        user: User
+    }
     type User {
         id: ID!
         firstName: String!
@@ -9,6 +14,7 @@ export const types = `#graphql
         following: [User]
         recommendedUsers: [User]
         tweets: [Tweet]
+        Likes: [Likes]
     }
 
 `;

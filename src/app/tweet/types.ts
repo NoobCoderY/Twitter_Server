@@ -1,5 +1,11 @@
 export const types = `#graphql
 
+     type Likes {
+            id: String!
+            tweet: Tweet
+            user: User
+        }
+
     input CreateTweetData {
         content: String!
         imageURL: String
@@ -10,5 +16,6 @@ export const types = `#graphql
         content: String!
         imageURL: String
         author: User
+        Likes: [Likes]
     }
 `;

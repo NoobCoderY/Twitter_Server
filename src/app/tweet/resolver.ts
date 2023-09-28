@@ -12,8 +12,6 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 const queries = {
   getAllTweets: () => TweetService.getAllTweets(),
   getSignedURLForTweet: async (
-    
-    
     parent: any,
     { imageType, imageName }: { imageType: string; imageName: string },
     ctx: GraphqlContext
@@ -35,7 +33,7 @@ const queries = {
     })
 
     const putObjectCommand = new PutObjectCommand({
-      Bucket: "twitterclonebucketyash",
+      Bucket: "yash-twitter-dev",
       ContentType: imageType,
       Key: `uploads/${ctx.user.id}/tweets/${imageName}-${Date.now()}`,
     });
@@ -60,7 +58,13 @@ const mutations = {
       });
   
       return tweet;
-    },
+  },
+  deleteTweet: async ( parent: any,
+    { id }: { id: string },
+    ctx: GraphqlContext) => {
+    const message = await TweetService.deleteTweet(id, ctx.user?.id)
+    return message;
+  }
 };
 
 const extraResolvers = {
