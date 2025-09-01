@@ -33,7 +33,7 @@ const queries = {
     })
 
     const putObjectCommand = new PutObjectCommand({
-      Bucket: "yash-twitter-dev",
+      Bucket: 'yash-twaddle-dev',
       ContentType: imageType,
       Key: `uploads/${ctx.user.id}/tweets/${imageName}-${Date.now()}`,
     });

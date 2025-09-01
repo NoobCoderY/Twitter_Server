@@ -6,6 +6,12 @@ import { User } from "@prisma/client";
 import { redisClient } from "../../client/redis";
 
 const queries = {
+  /**
+   * Verify Google token asynchronously.
+   *
+   * @param {any} token - the Google token to be verified
+   * @return {Promise<any>} the verified Google token
+   */
   verifyGoogleToken: async (parent: any, { token }: { token: string }) => {
     const resultToken = await UserService.verifyGoogleAuthToken(token);
     return resultToken;
@@ -16,6 +22,7 @@ const queries = {
     if (!id) return null;
     const user = await UserService.getUserById(id);
     return user;
+   
   },
   getUserById: async (
     parent: any,
